@@ -1,7 +1,5 @@
 const userController = require("../controllers/users")
 
-
-
 const resolvers = {
     Query: {
         users: async () => {

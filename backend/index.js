@@ -3,9 +3,10 @@ const { buildSubgraphSchema } = require('@apollo/subgraph');
 
 const {typeDefs: users} = require('./services/schema/users')
 const {resolvers: usersResolver} = require('./services/resolvers/users')
+const { typeDefs: channels } = require("./services/schema/channels");
+const { resolvers: channelResolver } = require("./services/resolvers/channels");
 
-const port = 4000
-
+const port = 4000;
 
 const federatedSchema = buildSubgraphSchema([
   {
@@ -13,16 +14,19 @@ const federatedSchema = buildSubgraphSchema([
       ${users}
     `,
     resolvers: usersResolver
+  },
+  {
+    typeDefs: gql`
+      ${channels}
+    `,
+    resolvers: channelResolver
   }
-])
-
-
-
+]);
 
 const server = new ApolloServer({
-  schema: federatedSchema,
+  schema: federatedSchema
 });
-
+    
 server.listen({ port }).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
 }).catch(err => {console.error(err)});
